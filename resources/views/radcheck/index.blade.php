@@ -15,7 +15,6 @@
         <th>username</th>
         <th>password</th>
         <th>status</th>
-        <th></th>
       </tr>
     </thead>
     <tbody>

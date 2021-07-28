@@ -52,18 +52,18 @@
        color: #fff;
    }
    .btn-red, .btn-green{
-       padding: 6px;
+       padding: 4px;
        border-radius: 2px; 
        color: #fff;
-       width: 50%;
+       width: 70%;
       
    }
    .btn-red{
-     border: 2px solid #e14949;
+     border: 0px solid #e14949;
      background: #e14949;
    }
    .btn-green{
-     border: 2px solid #1a887e;
+     border: 0px solid #1a887e;
      background: #1a887e;
    }
    
