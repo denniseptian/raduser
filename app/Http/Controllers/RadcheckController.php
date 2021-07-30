@@ -10,7 +10,7 @@ class RadcheckController extends Controller
     public function index()
     {
         //
-        $raddatas = Radcheck::orderBy('id', 'DESC')->get(); 
+        $raddatas = Radcheck::orderBy('id', 'DESC')->simplePaginate(50); 
         
         return view('radcheck.index', ['raddatas' => $raddatas]); 
     }
@@ -84,9 +84,10 @@ class RadcheckController extends Controller
     public function edit($id)
     {
         $rad = Radcheck::findOrFail($id);
-   
+        $radDuo = Radcheck::where('username', $rad->username)->get();
+
         return view('radcheck.edit', [
-                'raddata' => $rad
+                'raddata' => $radDuo
         ]);
     }
 
@@ -100,8 +101,10 @@ class RadcheckController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'username' => 'required|min:8',
+            'value' => 'required',
          ]);
+
+        var_dump($request->value);
                
          $post = Radcheck::find($id)->update($request->all()); 
                 
