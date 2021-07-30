@@ -4,10 +4,9 @@
 <div class="wrapper">
   <nav class="nav">
     <a class="nav-link active" style="font-weight: bold" aria-current="page" href="{{ url('/radcheck') }}"><i class="fas fa-arrow-circle-left"></i> BACK</a>
+    <a class="nav-link">Edit for user <b>{{ $raddata[0]['username']}}</b></a>
   </nav>
-  <label for="">---------------------------------------</label><br>
-  <label for="">Edit page for {{ $raddata[0]['username']}}</label><br>
-  <label for="">---------------------------------------</label><br>
+  <label for=""></label><br>
   @if (session('success'))
   <br>
   <div class="alert-success">

@@ -4,11 +4,9 @@
 <div class="wrapper">
   <nav class="nav">
     <a class="nav-link active" style="font-weight: bold" aria-current="page" href="{{ url('/radcheck') }}"><i class="fas fa-arrow-circle-left"></i> BACK</a>
+    <a class="nav-link">Create a new user</a>
   </nav>
-  <label for="">---------------------------------------</label><br>
-  <label style="font-weight: bold" for="">Create new user.</label><br>
-  <label for="">ex: 116009000</label><br>
-  <label for="">---------------------------------------</label><br>
+  <label for=""></label><br>
   @if (session('success'))
   <br>
 
