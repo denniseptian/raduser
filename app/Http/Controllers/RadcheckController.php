@@ -10,7 +10,7 @@ class RadcheckController extends Controller
     public function index()
     {
         //
-        $raddatas = Radcheck::orderBy('id', 'DESC'); 
+        $raddatas = Radcheck::orderBy('id', 'DESC')->get(); 
         
         return view('radcheck.index', ['raddatas' => $raddatas]); 
     }
