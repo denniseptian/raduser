@@ -10,7 +10,7 @@ class RadcheckController extends Controller
     public function index()
     {
         //
-        $raddatas = Radcheck::orderBy('id', 'DESC')->simplePaginate(50); 
+        $raddatas = Radcheck::orderBy('id', 'DESC'); 
         
         return view('radcheck.index', ['raddatas' => $raddatas]); 
     }
