@@ -20,6 +20,21 @@
     </ul>
   </div>
   @endif
+  {{-- {{ print_r($mrResponse['after']['ret']) }} --}}
+  @if ($mrResponse != false)
+    {{-- {{ print_r(explode(';',$mrResponse['after']['ret'])) }} --}}
+    <label for="pppinform">PPP</label>
+    <input type="text" name="pppinform" id="pppinform" value="Connected!" disabled><br>
+    <label for="address">Address</label>
+    <input disabled type="text" id="address" name="address" style="" value="{{ str_replace('address=','',explode(';',$mrResponse['after']['ret'])[1])}}"><br>
+    <label for="uptime">Uptime</label>
+    <input disabled type="text" id="uptime" name="uptime" style="" value="{{ str_replace('uptime=','',explode(';',$mrResponse['after']['ret'])[10])}}"><br>
+    <label for="radius">Radius</label>
+    <input disabled type="text" id="radius" name="radius" style="" value="{{ str_replace('radius=','',explode(';',$mrResponse['after']['ret'])[7])}}"><br>
+  @else
+    <label for="pppinform">PPP</label>
+    <input type="text" name="pppinform" id="pppinform" value="Not Connected!" disabled><br>
+  @endif
   @foreach ($raddata as $rad)
     @if ($rad->attribute == "Cleartext-Password")
     {{-- <form method="POST" action="{{ url('radcheck', $rad->id ) }}"> --}}

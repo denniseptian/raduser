@@ -30,8 +30,8 @@
             @csrf
             @method('DELETE')
             <td style="width: 90px"><button class="btn-red">Hapus</button></td>
-          </form>
-      </tr>  --}}
+          </form> --}}
+      </tr> 
       @endif
       
       @endforeach

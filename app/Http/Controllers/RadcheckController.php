@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Radcheck;
+use \RouterOS\Client;
+use \RouterOS\Query;
 
 class RadcheckController extends Controller
 {
@@ -83,12 +85,63 @@ class RadcheckController extends Controller
      */
     public function edit($id)
     {
+        $response = false;
+        $config = new \RouterOS\Config([
+            'host' => '203.29.26.247',
+            'user' => 'notanadmin',
+            'pass' => 'Supern3t2019',
+            'port' => 8728,
+        ]);
+        $client = new \RouterOS\Client($config);
+
         $rad = Radcheck::findOrFail($id);
         $radDuo = Radcheck::where('username', $rad->username)->get();
 
+        // $query = (new Query('/ip/address/print'));
+
+        $mikrotikIdppp = $this->get_idppp($rad->username);
+
+        if($mikrotikIdppp != null )
+        {
+            $query = new \RouterOS\Query('/ppp/active/get');
+            $query->where('.id', $mikrotikIdppp);
+            $query->equal('.id', $mikrotikIdppp);
+            
+            $response = $client->query($query)->read();
+        }
+
+        // array_push($radDuo, reset($response));
         return view('radcheck.edit', [
-                'raddata' => $radDuo
+                'raddata' => $radDuo,
+                'mrResponse' => $response
         ]);
+    }
+
+    // Subs of edit
+    public function get_idppp($username)
+    {
+        $result = null;
+        $config = new \RouterOS\Config([
+            'host' => '203.29.26.247',
+            'user' => 'notanadmin',
+            'pass' => 'Supern3t2019',
+            'port' => 8728,
+        ]);
+        $client = new \RouterOS\Client($config);
+
+        // Create 'where' Query object for RouterOS
+        $query = ( new Query('/ppp/active/print'));
+        // Send query and read response from RouterOS
+        $responses = $client->query($query)->read();
+        
+        foreach ($responses as $response)
+        {
+            if ($response['name'] == $username)
+
+            $result = $response['.id'];
+        }
+
+        return $result;
     }
 
     /**
