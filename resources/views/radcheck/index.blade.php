@@ -3,8 +3,8 @@
 @section('content')
 <div class="wrapper">
   <nav class="nav">
-    <a class="nav-link active" aria-current="page" href="{{ url('/radcheck/create') }}">Add new</a>
-    <a class="nav-link" href="#">soons</a>
+    <a class="nav-link active" aria-current="page" href="{{ url('/radcheck/create') }}"><i class="fas fa-user-plus"></i> Add new</a>
+    <a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> logout</a>
   </nav>
   <table class="table table-borderless">
     <thead>

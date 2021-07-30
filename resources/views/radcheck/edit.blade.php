@@ -2,8 +2,12 @@
 @section('title', 'Rad Edit')
 @section('content')
 <div class="wrapper">
-  <h1></h1>
-  Edit page. Back to <a href="{{ url('/radcheck') }}" style="color: blue">home</a><br>
+  <nav class="nav">
+    <a class="nav-link active" style="font-weight: bold" aria-current="page" href="{{ url('/radcheck') }}"><i class="fas fa-arrow-circle-left"></i> BACK</a>
+  </nav>
+  <label for="">---------------------------------------</label><br>
+  <label for="">Edit page for {{ $raddata[0]['username']}}</label><br>
+  <label for="">---------------------------------------</label><br>
   @if (session('success'))
   <br>
   <div class="alert-success">
@@ -61,7 +65,7 @@
           @endif
         </select>
         {{-- <input id="profile" name="profile" value="{{ $rad->value }}" type="text" placeholder="Title..."> --}}
-        <button class="btn-blue">Submit</button>
+        <button type="submit" class="btn btn-success"><i class="far fa-check-circle"></i> Submit</button>
     </form> 
     @endif     
   @endforeach

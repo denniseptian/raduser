@@ -2,9 +2,13 @@
 @section('title', 'Buat Username Baru')
 @section('content')
 <div class="wrapper">
-  <h1></h1>
-  <label for="" style="">Create user page. </label>
-  <br> Back to <a href="{{ url('/radcheck') }}" style="color: blue">home</a>.
+  <nav class="nav">
+    <a class="nav-link active" style="font-weight: bold" aria-current="page" href="{{ url('/radcheck') }}"><i class="fas fa-arrow-circle-left"></i> BACK</a>
+  </nav>
+  <label for="">---------------------------------------</label><br>
+  <label style="font-weight: bold" for="">Create new user.</label><br>
+  <label for="">ex: 116009000</label><br>
+  <label for="">---------------------------------------</label><br>
   @if (session('success'))
   <br>
 
