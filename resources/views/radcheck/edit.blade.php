@@ -2,11 +2,31 @@
 @section('title', 'Rad Edit')
 @section('content')
     <div class="wrapper">
-        <nav class="nav">
-            <a class="nav-link active" style="font-weight: bold" aria-current="page" href="{{ url('/radcheck') }}"><i
-                    class="fas fa-arrow-circle-left"></i> BACK</a>
-            <a class="nav-link">Edit for user <b>{{ $raddata[0]['username'] }}</b></a>
-        </nav>
+        <div class="row">
+            <div class="col-md-8">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+                        <a class="nav-link active" style="font-weight: bold" aria-current="page"
+                            href="{{ URL::previous() }}"><i class="fas fa-arrow-circle-left"></i> BACK</a>
+                        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="{{ url('/radcheck') }}">Home</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link">UID <b>{{ $raddata[0]['username'] }}</b></a>
+                                </li>
+                            </ul>
+
+                            <form class="d-flex">
+                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
         <label for=""></label><br>
         @if (session('success'))
             <br>
@@ -24,7 +44,6 @@
                 </ul>
             </div>
         @endif
-        {{-- {{ print_r($mrResponse['after']['ret']) }} --}}
         @if ($mrResponse != false)
             {{-- {{ print_r(explode(';',$mrResponse['after']['ret'])) }} --}}
             <div class="row">
@@ -71,9 +90,16 @@
                 </div>
             </div>
         @else
-            <label for="pppinform">PPP</label>
-            <input type="text" style="color:red; font-weight:bold;" name="pppinform" id="pppinform" value="Not Connected!"
-                disabled><br>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="pppinform">PPP Status:</label>
+                        <input type="text" class="form-control" style="color:red; font-weight:bold;" name="pppinform"
+                            id="pppinform" value="Not Connected!" aria-describedby="pppinform" disabled>
+                        <small id="pppinform" class="form-text text-muted">Informasi tentang koneksi ppp.</small>
+                    </div>
+                </div>
+            </div>
         @endif
         @foreach ($raddata as $rad)
             @if ($rad->attribute == 'Cleartext-Password')
@@ -88,7 +114,9 @@
                                     <div class="form-group">
                                         <label for="username">Username</label>
                                         <input class="form-control" id="username" name="username"
-                                            value="{{ $rad->username }}" type="text" placeholder="Title..." disabled><br>
+                                            value="{{ $rad->username }}" type="text" placeholder="Title..."
+                                            aria-describedby="username" disabled>
+                                        <small id="username" class="form-text text-muted">Username PPP radius.</small>
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +124,9 @@
                                 <div class="form-group">
                                     <label for="password">password</label>
                                     <input class="form-control" type="text" name="password" id="password"
-                                        value="{{ $rad->value }}" placeholder="Password" disabled>
+                                        value="{{ $rad->value }}" placeholder="Password" aria-describedby="password"
+                                        disabled>
+                                    <small id="password" class="form-text text-muted">Password PPP radius.</small>
                                 </div>
                             </div>
                         </div>
@@ -133,7 +163,7 @@
                             </div>
                         </div>
                     </div>
-                </form>                
+                </form>
             @endif
         @endforeach
     </div>
