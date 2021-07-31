@@ -24,12 +24,20 @@
     </ul>
   </div>
   @endif
+  <div class="row">
+    <div class="col-sm-4">
+      <form method="POST" action="{{ url('radcheck') }}">
+        @csrf
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input type="text" class="form-control" id="username" name="username" aria-describedby="username" placeholder="11600XXXX">
+          <small id="username" class="form-text text-muted">Masukkan kode yang di dapat dari web manage.</small>
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+      </form>
+    </div>
+  </div>
   
-  <form method="POST" action="{{ url('radcheck') }}">
-    @csrf
-    <input name="username" type="text" placeholder="Username...">
-    <button class="btn-blue">Submit</button>
-  </form>
 
 </div>
 @endsection
