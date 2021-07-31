@@ -1,38 +1,29 @@
 @extends('layouts.app')
 @section('title', 'Semua Post')
+@section('cssaddons')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+@endsection
+@section('menu')
+    <a class="nav-link active" aria-current="page" href="{{ url('/radcheck/create') }}"><i class="fas fa-user-plus"></i>
+        Add new</a>
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li>
+            <a class="nav-link">Home</b></a>
+        </li>
+    </ul>
+@endsection
 @section('content')
     <div class="wrapper">
         <div class="row">
-            <div class="col-md-8">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <div class="container-fluid">
-                        <a class="nav-link active" aria-current="page" href="{{ url('/radcheck/create') }}"><i
-                                class="fas fa-user-plus"></i> Add new</a>
-                        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li>
-                                    <a class="nav-link">Home | Daftar radius account.</b></a>
-                                </li>
-                            </ul>
-                            <form class="d-flex">
-                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
-                            <a class="nav-link" href="#"><i class="fas fa-arrow-circle-left"></i> logout</a>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-        <label for=""></label><br>
-        <div class="row">
-            <div class="col-md-6">
-                <table id="example" class="display" style="width:100%">
+            <div class="col-md-4">
+                <table id="example" class="table table-striped" style="width:100%">
                     <thead>
                         <tr>
                             <th scope="col">Username</th>
                             <th scope="col">Password</th>
                             <th scope="col">Status</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,7 +41,6 @@
                                             role="button">Edit</a></td>
                                 </tr>
                             @endif
-
                         @endforeach
                     </tbody>
                     <tfoot>
@@ -58,10 +48,21 @@
                             <th scope="col">Username</th>
                             <th scope="col">Password</th>
                             <th scope="col">Status</th>
+                            <th></th>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
     </div>
+@endsection
+@section('jsaddons')
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        });
+    </script>
 @endsection

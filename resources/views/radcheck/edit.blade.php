@@ -1,32 +1,19 @@
 @extends('layouts.app')
 @section('title', 'Rad Edit')
+@section('menu')
+    <a class="nav-link active" style="font-weight: bold" aria-current="page" href="{{ URL::previous() }}"><i
+            class="fas fa-arrow-circle-left"></i> BACK</a>
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ url('/radcheck') }}">Home</a>
+        </li>
+        <li>
+            <a class="nav-link">UID <b>{{ $raddata[0]['username'] }}</b></a>
+        </li>
+    </ul>
+@endsection
 @section('content')
     <div class="wrapper">
-        <div class="row">
-            <div class="col-md-8">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <div class="container-fluid">
-                        <a class="nav-link active" style="font-weight: bold" aria-current="page"
-                            href="{{ URL::previous() }}"><i class="fas fa-arrow-circle-left"></i> BACK</a>
-                        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="{{ url('/radcheck') }}">Home</a>
-                                </li>
-                                <li>
-                                    <a class="nav-link">UID <b>{{ $raddata[0]['username'] }}</b></a>
-                                </li>
-                            </ul>
-
-                            <form class="d-flex">
-                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
         <label for=""></label><br>
         @if (session('success'))
             <br>
@@ -48,12 +35,27 @@
             {{-- {{ print_r(explode(';',$mrResponse['after']['ret'])) }} --}}
             <div class="row">
                 <div class="col-sm-4">
-                    <div class="form-group">
-                        <label for="pppinform">PPP Status:</label>
-                        <input type="text" class="form-control" style="color:green; font-weight:bold;" name="pppinform"
-                            id="pppinform" value="Connected!" aria-describedby="pppinform" disabled>
-                        <small id="pppinform" class="form-text text-muted">Informasi tentang koneksi ppp.</small>
-                    </div>
+                    <form method="POST" action="{{ url('radcheck/ifaceremove', $raddata[0]->username) }}">
+                        @csrf
+                        @method('PUT')
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="form-group">
+                                    <label for="pppinform">PPP Status:</label>
+                                    <input type="text" class="form-control" style="color:green; font-weight:bold;"
+                                        name="pppinform" id="pppinform" value="Connected!" aria-describedby="pppinform"
+                                        disabled>
+                                    <small id="pppinform" class="form-text text-muted">Informasi tentang koneksi
+                                        ppp.</small>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="reloadPPP"></label>
+                                <button class="btn btn-success form-control" type="submit" name="reloadPPP"
+                                    id="reloadPPP"><i class="fas fa-power-off"></i></button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class="row">

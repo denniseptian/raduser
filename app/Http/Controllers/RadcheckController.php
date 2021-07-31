@@ -116,6 +116,16 @@ class RadcheckController extends Controller
                 'mrResponse' => $response
         ]);
     }
+    
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function ifaceremove($username){
+        print_r($username);
+    }
 
     // Subs of edit
     public function get_idppp($username)
