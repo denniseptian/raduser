@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRadchecksTable extends Migration
+class CreateAuthsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateRadchecksTable extends Migration
      */
     public function up()
     {
-        Schema::create('radcheck', function (Blueprint $table) {
+        Schema::create('auths', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('attribute');
-            $table->string('op');
-            $table->string('value');
             $table->timestamps();
+            $table->string('username');
+            $table->string('password');
         });
     }
 
@@ -30,6 +28,6 @@ class CreateRadchecksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('radchecks');
+        Schema::dropIfExists('auths');
     }
 }

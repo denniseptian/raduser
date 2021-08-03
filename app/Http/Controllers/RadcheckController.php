@@ -9,12 +9,15 @@ use \RouterOS\Query;
 
 class RadcheckController extends Controller
 {
+
     public function index()
     {
-        //
-        $raddatas = Radcheck::orderBy('id', 'DESC')->get(); 
-        
-        return view('radcheck.index', ['raddatas' => $raddatas]); 
+        if (app('App\Http\Controllers\AuthController')->index()) {
+            $raddatas = Radcheck::orderBy('id', 'DESC')->get();
+            return view('radcheck.index', ['raddatas' => $raddatas]);
+        } else {
+            return redirect('/login');
+        }
     }
 
     /**
@@ -24,7 +27,11 @@ class RadcheckController extends Controller
      */
     public function create()
     {
-        return view('radcheck.create');
+        if (app('App\Http\Controllers\AuthController')->index()) {
+            return view('radcheck.create');
+        } else {
+            return redirect('/login');
+        }
     }
 
     /**
@@ -42,28 +49,28 @@ class RadcheckController extends Controller
             $n = rand(0, $alphaLength);
             $pass[] = $alphabet[$n];
         }
-        
+
         //
         $request->validate([
             'username' => 'required|min:9'
-          ]);
-          
-          $request->request->add(['attribute' => 'Cleartext-Password']); //add att
-          $request->request->add(['op' => ':=']); //add op
-          $request->request->add(['value' => implode($pass)]); //add att
+        ]);
 
-          $input = $request->all();
-          $post = Radcheck::create($input);
+        $request->request->add(['attribute' => 'Cleartext-Password']); //add att
+        $request->request->add(['op' => ':=']); //add op
+        $request->request->add(['value' => implode($pass)]); //add att
+
+        $input = $request->all();
+        $post = Radcheck::create($input);
 
 
-          $profile = new Radcheck();
-          $profile->username = $request->username;
-          $profile->attribute = 'User-Profile';
-          $profile->op = ':=';
-          $profile->value = 'active';
-          $profile->save();
-         
-          return back()->with('success',' Username baru berhasil dibuat. '.$request->username.' with password '.implode($pass));
+        $profile = new Radcheck();
+        $profile->username = $request->username;
+        $profile->attribute = 'User-Profile';
+        $profile->op = ':=';
+        $profile->value = 'active';
+        $profile->save();
+
+        return back()->with('success', ' Username baru berhasil dibuat. ' . $request->username . ' with password ' . implode($pass));
     }
 
     /**
@@ -101,29 +108,29 @@ class RadcheckController extends Controller
 
         $mikrotikIdppp = $this->get_idppp($rad->username);
 
-        if($mikrotikIdppp != null )
-        {
+        if ($mikrotikIdppp != null) {
             $query = new \RouterOS\Query('/ppp/active/get');
             $query->where('.id', $mikrotikIdppp);
             $query->equal('.id', $mikrotikIdppp);
-            
+
             $response = $client->query($query)->read();
         }
 
         // array_push($radDuo, reset($response));
         return view('radcheck.edit', [
-                'raddata' => $radDuo,
-                'mrResponse' => $response
+            'raddata' => $radDuo,
+            'mrResponse' => $response
         ]);
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function ifaceremove($username){
+    public function ifaceremove($username)
+    {
         print_r($username);
     }
 
@@ -140,15 +147,14 @@ class RadcheckController extends Controller
         $client = new \RouterOS\Client($config);
 
         // Create 'where' Query object for RouterOS
-        $query = ( new Query('/ppp/active/print'));
+        $query = (new Query('/ppp/active/print'));
         // Send query and read response from RouterOS
         $responses = $client->query($query)->read();
-        
-        foreach ($responses as $response)
-        {
+
+        foreach ($responses as $response) {
             if ($response['name'] == $username)
 
-            $result = $response['.id'];
+                $result = $response['.id'];
         }
 
         return $result;
@@ -165,13 +171,13 @@ class RadcheckController extends Controller
     {
         $request->validate([
             'value' => 'required',
-         ]);
+        ]);
 
         var_dump($request->value);
-               
-         $post = Radcheck::find($id)->update($request->all()); 
-                
-         return back()->with('success',' Data telah diperbaharui!');
+
+        $post = Radcheck::find($id)->update($request->all());
+
+        return back()->with('success', ' Data telah diperbaharui!');
     }
 
     /**
