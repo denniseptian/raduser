@@ -2,7 +2,7 @@
 @section('title', 'Login sluer!')
 @section('content')
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <form method="POST" action="{{ route('login.custom') }}">
                 @csrf
                 <div class="form-group">
