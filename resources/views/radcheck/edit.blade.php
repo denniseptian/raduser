@@ -149,7 +149,7 @@
                                         @if ($rad->value == 'expired')
                                             <option value="expired" selected>expired</option>
                                             <option value="active">active</option>
-                                        @elseif ($rad->value == "active")
+                                        @else
                                             <option value="expired">expired</option>
                                             <option value="active" selected>active</option>
                                         @endif
