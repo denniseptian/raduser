@@ -26,12 +26,15 @@
                                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                                 <button class="btn btn-outline-success" type="submit">Search</button>
                             </form>
-                            <a class="nav-link" href="{{ url('/signout')}}"><i class="fas fa-arrow-circle-left"></i> logout</a>
+                            <a class="nav-link" href="{{ url('/signout') }}"><i class="fas fa-arrow-circle-left"></i>
+                                logout</a>
                         </div>
                     </div>
                 </nav>
             </div>
-            @yield('content')
+            <div class="col-md-8">
+                @yield('content')
+            </div>
         </div>
 </body>
 @yield('jsaddons')

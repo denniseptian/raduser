@@ -10,6 +10,13 @@ use \RouterOS\Query;
 class RadcheckController extends Controller
 {
 
+    public function __construct()
+    {
+        if (!app('App\Http\Controllers\AuthController')->index()) {
+            return redirect('/login');
+        } 
+    }
+
     public function index()
     {
         if (app('App\Http\Controllers\AuthController')->index()) {
@@ -55,22 +62,31 @@ class RadcheckController extends Controller
             'username' => 'required|min:9'
         ]);
 
-        $request->request->add(['attribute' => 'Cleartext-Password']); //add att
-        $request->request->add(['op' => ':=']); //add op
-        $request->request->add(['value' => implode($pass)]); //add att
+        // $username = Radcheck::where('username', $request->username)->first();
 
-        $input = $request->all();
-        $post = Radcheck::create($input);
+        // print_r($username);
 
-
-        $profile = new Radcheck();
-        $profile->username = $request->username;
-        $profile->attribute = 'User-Profile';
-        $profile->op = ':=';
-        $profile->value = 'active';
-        $profile->save();
-
-        return back()->with('success', ' Username baru berhasil dibuat. ' . $request->username . ' with password ' . implode($pass));
+        if (!Radcheck::where('username', $request->username)->first()) {
+            # code...
+            $request->request->add(['attribute' => 'Cleartext-Password']); //add att
+            $request->request->add(['op' => ':=']); //add op
+            $request->request->add(['value' => implode($pass)]); //add att
+    
+            $input = $request->all();
+            $post = Radcheck::create($input);
+    
+    
+            $profile = new Radcheck();
+            $profile->username = $request->username;
+            $profile->attribute = 'User-Profile';
+            $profile->op = ':=';
+            $profile->value = 'active';
+            $profile->save();
+    
+            return back()->with('success', ' Username baru berhasil dibuat. ' . $request->username . ' with password ' . implode($pass));
+        } else {
+            return back()->withErrors(' Gagal mendaftarakan username baru, Sudah terdapat username yang lama.');
+        }
     }
 
     /**

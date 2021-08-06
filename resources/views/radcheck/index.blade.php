@@ -16,7 +16,7 @@
 @section('content')
     <div class="wrapper">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <table id="example" class="table table-striped" style="width:100%">
                     <thead>
                         <tr>
@@ -37,8 +37,8 @@
                                     @else
                                         <td style="color: grey">Unknown</td>
                                     @endif
-                                    <td><a class="btn btn-warning" href="{{ route('radcheck.edit', $raddata->id) }}"
-                                            role="button">Edit</a></td>
+                                    <td><a class="btn btn-info btn-sm" href="{{ route('radcheck.edit', $raddata->id) }}"
+                                            role="button"><i class="fas fa-pen"></i> Edit</a></td>
                                 </tr>
                             @endif
                         @endforeach
