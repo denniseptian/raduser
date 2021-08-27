@@ -145,7 +145,7 @@ class RadcheckController extends Controller
 
             return view('radcheck.edit', [
                 'raddata' => $radDuo,
-                'mrResponse' => ""
+                'mrResponse' => false
             ]);
         }
     }
