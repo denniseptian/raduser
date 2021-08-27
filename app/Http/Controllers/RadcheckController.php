@@ -144,7 +144,8 @@ class RadcheckController extends Controller
             $radDuo = Radcheck::where('username', $rad->username)->get();
 
             return view('radcheck.edit', [
-                'raddata' => $radDuo
+                'raddata' => $radDuo,
+                'mrResponse' => ""
             ]);
         }
     }
