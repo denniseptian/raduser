@@ -14,7 +14,7 @@ class RadcheckController extends Controller
     {
         if (!app('App\Http\Controllers\AuthController')->index()) {
             return redirect('/login');
-        } 
+        }
     }
 
     public function index()
@@ -71,18 +71,18 @@ class RadcheckController extends Controller
             $request->request->add(['attribute' => 'Cleartext-Password']); //add att
             $request->request->add(['op' => ':=']); //add op
             $request->request->add(['value' => implode($pass)]); //add att
-    
+
             $input = $request->all();
             $post = Radcheck::create($input);
-    
-    
+
+
             $profile = new Radcheck();
             $profile->username = $request->username;
             $profile->attribute = 'User-Profile';
             $profile->op = ':=';
             $profile->value = 'active';
             $profile->save();
-    
+
             return back()->with('success', ' Username baru berhasil dibuat. ' . $request->username . ' with password ' . implode($pass));
         } else {
             return back()->withErrors(' Gagal mendaftarakan username baru, Sudah terdapat username yang lama.');
@@ -115,28 +115,38 @@ class RadcheckController extends Controller
             'pass' => 'Supern3t2019',
             'port' => 8728,
         ]);
-        $client = new \RouterOS\Client($config);
+        try {
+            //code...
+            $client = new \RouterOS\Client($config);
 
-        $rad = Radcheck::findOrFail($id);
-        $radDuo = Radcheck::where('username', $rad->username)->get();
+            $rad = Radcheck::findOrFail($id);
+            $radDuo = Radcheck::where('username', $rad->username)->get();
 
-        // $query = (new Query('/ip/address/print'));
+            // $query = (new Query('/ip/address/print'));
 
-        $mikrotikIdppp = $this->get_idppp($rad->username);
+            $mikrotikIdppp = $this->get_idppp($rad->username);
 
-        if ($mikrotikIdppp != null) {
-            $query = new \RouterOS\Query('/ppp/active/get');
-            $query->where('.id', $mikrotikIdppp);
-            $query->equal('.id', $mikrotikIdppp);
+            if ($mikrotikIdppp != null) {
+                $query = new \RouterOS\Query('/ppp/active/get');
+                $query->where('.id', $mikrotikIdppp);
+                $query->equal('.id', $mikrotikIdppp);
 
-            $response = $client->query($query)->read();
+                $response = $client->query($query)->read();
+            }
+
+            // array_push($radDuo, reset($response));
+            return view('radcheck.edit', [
+                'raddata' => $radDuo,
+                'mrResponse' => $response
+            ]);
+        } catch (\Throwable $th) {
+            $rad = Radcheck::findOrFail($id);
+            $radDuo = Radcheck::where('username', $rad->username)->get();
+
+            return view('radcheck.edit', [
+                'raddata' => $radDuo
+            ]);
         }
-
-        // array_push($radDuo, reset($response));
-        return view('radcheck.edit', [
-            'raddata' => $radDuo,
-            'mrResponse' => $response
-        ]);
     }
 
     /**
