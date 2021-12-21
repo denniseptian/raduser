@@ -9,7 +9,6 @@ use \RouterOS\Query;
 
 class RadcheckController extends Controller
 {
-
     public function __construct()
     {
         if (!app('App\Http\Controllers\AuthController')->index()) {
@@ -108,50 +107,54 @@ class RadcheckController extends Controller
      */
     public function edit($id)
     {
-        $response = false;
-        try {
-            $config = new \RouterOS\Config([
-                'host' => '203.29.26.247',
-                'user' => 'notanadmin',
-                'pass' => 'Supern3t2019',
-                'port' => 8728,
-            ]);
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
-        if ($config){
-            //code...
-            $client = new \RouterOS\Client($config);
+        // $response = false;
+        // $config = new \RouterOS\Config([
+        //     'host' => '203.29.26.247',
+        //     'user' => 'notanadmin',
+        //     'pass' => 'Supern3t2019',
+        //     'port' => 8728,
+        // ]);
+        // try {
+        //     //code...
+        //     $client = new \RouterOS\Client($config);
 
-            $rad = Radcheck::findOrFail($id);
-            $radDuo = Radcheck::where('username', $rad->username)->get();
+        //     $rad = Radcheck::findOrFail($id);
+        //     $radDuo = Radcheck::where('username', $rad->username)->get();
 
-            // $query = (new Query('/ip/address/print'));
+        //     // $query = (new Query('/ip/address/print'));
 
-            $mikrotikIdppp = $this->get_idppp($rad->username);
+        //     $mikrotikIdppp = $this->get_idppp($rad->username);
 
-            if ($mikrotikIdppp != null) {
-                $query = new \RouterOS\Query('/ppp/active/get');
-                $query->where('.id', $mikrotikIdppp);
-                $query->equal('.id', $mikrotikIdppp);
+        //     if ($mikrotikIdppp != null) {
+        //         $query = new \RouterOS\Query('/ppp/active/get');
+        //         $query->where('.id', $mikrotikIdppp);
+        //         $query->equal('.id', $mikrotikIdppp);
 
-                $response = $client->query($query)->read();
-            }
+        //         $response = $client->query($query)->read();
+        //     }
 
-            // array_push($radDuo, reset($response));
-            return view('radcheck.edit', [
-                'raddata' => $radDuo,
-                'mrResponse' => $response
-            ]);
-        } else {
-            $rad = Radcheck::findOrFail($id);
-            $radDuo = Radcheck::where('username', $rad->username)->get();
+        //     // array_push($radDuo, reset($response));
+        //     return view('radcheck.edit', [
+        //         'raddata' => $radDuo,
+        //         'mrResponse' => $response
+        //     ]);
+        // } catch (\Throwable $th) {
+        //     $rad = Radcheck::findOrFail($id);
+        //     $radDuo = Radcheck::where('username', $rad->username)->get();
 
-            return view('radcheck.edit', [
+        //     return view('radcheck.edit', [
+        //         'raddata' => $radDuo,
+        //         'mrResponse' => false
+        //     ]);
+        // }
+
+        $rad = Radcheck::findOrFail($id);
+        $radDuo = Radcheck::where('username', $rad->username)->get();
+
+        return view('radcheck.edit', [
                 'raddata' => $radDuo,
                 'mrResponse' => false
             ]);
-        }
     }
 
     /**
@@ -183,9 +186,9 @@ class RadcheckController extends Controller
         $responses = $client->query($query)->read();
 
         foreach ($responses as $response) {
-            if ($response['name'] == $username)
-
+            if ($response['name'] == $username) {
                 $result = $response['.id'];
+            }
         }
 
         return $result;
