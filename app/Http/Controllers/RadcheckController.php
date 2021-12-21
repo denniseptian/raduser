@@ -109,13 +109,17 @@ class RadcheckController extends Controller
     public function edit($id)
     {
         $response = false;
-        $config = new \RouterOS\Config([
-            'host' => '203.29.26.247',
-            'user' => 'notanadmin',
-            'pass' => 'Supern3t2019',
-            'port' => 8728,
-        ]);
         try {
+            $config = new \RouterOS\Config([
+                'host' => '203.29.26.247',
+                'user' => 'notanadmin',
+                'pass' => 'Supern3t2019',
+                'port' => 8728,
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        if ($config){
             //code...
             $client = new \RouterOS\Client($config);
 
@@ -139,7 +143,7 @@ class RadcheckController extends Controller
                 'raddata' => $radDuo,
                 'mrResponse' => $response
             ]);
-        } catch (\Throwable $th) {
+        } else {
             $rad = Radcheck::findOrFail($id);
             $radDuo = Radcheck::where('username', $rad->username)->get();
 
