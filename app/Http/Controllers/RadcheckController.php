@@ -109,42 +109,42 @@ class RadcheckController extends Controller
     public function edit($id)
     {
         $response = false;
-        $config = new \RouterOS\Config([
-            'host' => '203.29.26.247',
-            'user' => 'notanadmin',
-            'pass' => 'Supern3t2019',
-            'port' => 8728,
-        ]);
-        try {
-            //code...
-            $client = new \RouterOS\Client($config);
+        // $config = new \RouterOS\Config([
+        //     'host' => '203.29.26.247',
+        //     'user' => 'notanadmin',
+        //     'pass' => 'Supern3t2019',
+        //     'port' => 8728,
+        // ]);
+        // try {
+        //     //code...
+        //     $client = new \RouterOS\Client($config);
 
-            $rad = Radcheck::findOrFail($id);
-            $radDuo = Radcheck::where('username', $rad->username)->get();
+        //     $rad = Radcheck::findOrFail($id);
+        //     $radDuo = Radcheck::where('username', $rad->username)->get();
 
-            $mikrotikIdppp = $this->get_idppp($rad->username);
-            if ($mikrotikIdppp != null) {
-                $query = new \RouterOS\Query('/ppp/active/get');
-                $query->where('.id', $mikrotikIdppp);
-                $query->equal('.id', $mikrotikIdppp);
+        //     $mikrotikIdppp = $this->get_idppp($rad->username);
+        //     if ($mikrotikIdppp != null) {
+        //         $query = new \RouterOS\Query('/ppp/active/get');
+        //         $query->where('.id', $mikrotikIdppp);
+        //         $query->equal('.id', $mikrotikIdppp);
 
-                $response = $client->query($query)->read();
-            }
+        //         $response = $client->query($query)->read();
+        //     }
 
-            // array_push($radDuo, reset($response));
-            return view('radcheck.edit', [
-                'raddata' => $radDuo,
-                'mrResponse' => $response
-            ]);
-        } catch (\Throwable $th) {
-            $rad = Radcheck::findOrFail($id);
-            $radDuo = Radcheck::where('username', $rad->username)->get();
+        //     // array_push($radDuo, reset($response));
+        //     return view('radcheck.edit', [
+        //         'raddata' => $radDuo,
+        //         'mrResponse' => $response
+        //     ]);
+        // } catch (\Throwable $th) {
+        //     $rad = Radcheck::findOrFail($id);
+        //     $radDuo = Radcheck::where('username', $rad->username)->get();
 
-            return view('radcheck.edit', [
-                'raddata' => $radDuo,
-                'mrResponse' => false
-            ]);
-        }
+        //     return view('radcheck.edit', [
+        //         'raddata' => $radDuo,
+        //         'mrResponse' => false
+        //     ]);
+        // }
 
         $rad = Radcheck::findOrFail($id);
         $radDuo = Radcheck::where('username', $rad->username)->get();
