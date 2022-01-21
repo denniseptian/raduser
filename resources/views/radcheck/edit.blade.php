@@ -97,7 +97,7 @@
                     <div class="form-group">
                         <label for="pppinform">PPP Status:</label>
                         <input type="text" class="form-control" style="color:red; font-weight:bold;" name="pppinform"
-                            id="pppinform" value="Not Connected!" aria-describedby="pppinform" disabled>
+                            id="pppinform" value="Disabled with system!" aria-describedby="pppinform" disabled>
                         <small id="pppinform" class="form-text text-muted">Informasi tentang koneksi ppp.</small>
                     </div>
                 </div>
