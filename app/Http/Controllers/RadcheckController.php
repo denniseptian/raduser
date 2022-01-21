@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Radcheck;
 use \RouterOS\Client;
 use \RouterOS\Query;
+use SebastianBergmann\Environment\Console;
 
 class RadcheckController extends Controller
 {
@@ -107,46 +108,43 @@ class RadcheckController extends Controller
      */
     public function edit($id)
     {
-        // $response = false;
-        // $config = new \RouterOS\Config([
-        //     'host' => '203.29.26.247',
-        //     'user' => 'notanadmin',
-        //     'pass' => 'Supern3t2019',
-        //     'port' => 8728,
-        // ]);
-        // try {
-        //     //code...
-        //     $client = new \RouterOS\Client($config);
+        $response = false;
+        $config = new \RouterOS\Config([
+            'host' => '203.29.26.247',
+            'user' => 'notanadmin',
+            'pass' => 'Supern3t2019',
+            'port' => 8728,
+        ]);
+        try {
+            //code...
+            $client = new \RouterOS\Client($config);
 
-        //     $rad = Radcheck::findOrFail($id);
-        //     $radDuo = Radcheck::where('username', $rad->username)->get();
+            $rad = Radcheck::findOrFail($id);
+            $radDuo = Radcheck::where('username', $rad->username)->get();
 
-        //     // $query = (new Query('/ip/address/print'));
+            $mikrotikIdppp = $this->get_idppp($rad->username);
+            if ($mikrotikIdppp != null) {
+                $query = new \RouterOS\Query('/ppp/active/get');
+                $query->where('.id', $mikrotikIdppp);
+                $query->equal('.id', $mikrotikIdppp);
 
-        //     $mikrotikIdppp = $this->get_idppp($rad->username);
+                $response = $client->query($query)->read();
+            }
 
-        //     if ($mikrotikIdppp != null) {
-        //         $query = new \RouterOS\Query('/ppp/active/get');
-        //         $query->where('.id', $mikrotikIdppp);
-        //         $query->equal('.id', $mikrotikIdppp);
+            // array_push($radDuo, reset($response));
+            return view('radcheck.edit', [
+                'raddata' => $radDuo,
+                'mrResponse' => $response
+            ]);
+        } catch (\Throwable $th) {
+            $rad = Radcheck::findOrFail($id);
+            $radDuo = Radcheck::where('username', $rad->username)->get();
 
-        //         $response = $client->query($query)->read();
-        //     }
-
-        //     // array_push($radDuo, reset($response));
-        //     return view('radcheck.edit', [
-        //         'raddata' => $radDuo,
-        //         'mrResponse' => $response
-        //     ]);
-        // } catch (\Throwable $th) {
-        //     $rad = Radcheck::findOrFail($id);
-        //     $radDuo = Radcheck::where('username', $rad->username)->get();
-
-        //     return view('radcheck.edit', [
-        //         'raddata' => $radDuo,
-        //         'mrResponse' => false
-        //     ]);
-        // }
+            return view('radcheck.edit', [
+                'raddata' => $radDuo,
+                'mrResponse' => false
+            ]);
+        }
 
         $rad = Radcheck::findOrFail($id);
         $radDuo = Radcheck::where('username', $rad->username)->get();
@@ -163,10 +161,25 @@ class RadcheckController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function ifaceremove($username)
-    {
-        print_r($username);
-    }
+
+    public function removeiface($username)
+    {        
+        $config = new \RouterOS\Config([
+            'host' => '203.29.26.247',
+            'user' => 'notanadmin',
+            'pass' => 'Supern3t2019',
+            'port' => 8728,
+        ]);
+        $client = new \RouterOS\Client($config);
+
+        $id = $this->get_idppp($username);
+
+        $query = new \RouterOS\Query('/ppp/active/remove');
+        $query->where('.id', $id);
+        $query->equal('.id', $id);
+        
+        $response = $client->query($query)->read();
+    } 
 
     // Subs of edit
     public function get_idppp($username)
@@ -222,6 +235,7 @@ class RadcheckController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->removeiface($id);
+        return back()->with('success','Operation Successful, PPPoE Interface restarted!');
     }
 }

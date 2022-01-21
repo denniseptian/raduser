@@ -31,13 +31,13 @@
                 </ul>
             </div>
         @endif
-        @if ($mrResponse != false)
+        @if ($mrResponse)
             {{-- {{ print_r(explode(';',$mrResponse['after']['ret'])) }} --}}
             <div class="row">
                 <div class="col-sm-4">
-                    <form method="POST" action="{{ url('radcheck/ifaceremove', $raddata[0]->username) }}">
+                    <form method="POST" action="{{ route('radcheck.destroy', $raddata[0]->username) }}">
                         @csrf
-                        @method('PUT')
+                        @method('DELETE')
                         <div class="row">
                             <div class="col-sm-10">
                                 <div class="form-group">
